@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ptteng.gwj.dao.ProfessionDao">
+
+    <!--声明实体类类型和数据库字段名-->
+    <resultMap id="professionMap" type="com.ptteng.gwj.entities.Profession">
+        <id property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createAt" column="create_at"/>
+        <result property="occupationType" column="occupation_type"/>
+        <result property="occupation" column="occupation"/>
+        <result property="placement" column="placement"/>
+        <result property="companies" column="companies"/>
+        <result property="students" column="students"/>
+        <result property="point" column="point"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateAt" column="update_at"/>
+    </resultMap>
+
+
+    <!--获取前端方向-->
+    <select id="getInformationFront" resultType="com.ptteng.gwj.entities.Profession">
+        select * from tb_profession where occupation_type='前端开发方向'
+    </select>
+
+    <!--获取后段方向-->
+    <select id="getInformationRear" resultType="com.ptteng.gwj.entities.Profession">
+        select * from tb_profession where occupation_type='后端开发方向'
+    </select>
+
+    <!--获取运维方向-->
+    <select id="getInformationOperation" resultType="com.ptteng.gwj.entities.Profession">
+        select * from tb_profession where occupation_type='运维方向'
+    </select>
+
+
+</mapper>

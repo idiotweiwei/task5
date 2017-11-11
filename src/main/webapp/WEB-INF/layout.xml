@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <!-- 主布局 -->
+    <definition name="layout" template="/tiles/ptteng.jsp">
+    </definition>
+    <!-- 主布局 -->
+
+    <!-- 项目 -->
+    <definition name="*.page" extends="layout">
+        <put-attribute name="header" value="/tiles/header.jsp" />
+        <put-attribute name="body" value="/tiles/{1}.jsp"/>
+        <put-attribute name="footer" value="/tiles/footer.jsp" />
+    </definition>
+    <!-- 项目 -->
+
+</tiles-definitions>

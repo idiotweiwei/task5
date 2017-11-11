@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ptteng.gwj.dao.StudentDao">
+
+    <!--声明实体类类型和数据库字段名-->
+    <resultMap id="studentMap" type="com.ptteng.gwj.entities.Student">
+        <id property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createAt" column="create_at"/>
+        <result property="studentName" column="student_name"/>
+        <result property="isWorking" column="is_working"/>
+        <result property="studentPosition" column="student_position"/>
+        <result property="summary" column="summary"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateAt" column="update_at"/>
+    </resultMap>
+
+    <!--学员列表-->
+    <select id="getAllStudent" resultType="com.ptteng.gwj.entities.Student">
+        select * from tb_student
+    </select>
+
+    <!--增加-->
+    <insert id="addStudent" parameterType="com.ptteng.gwj.entities.Student">
+        insert into tb_student(create_by,create_at,student_name,is_working,student_position,summary,update_by,update_at)
+        values (#{createBy},#{createAt},#{studentName},#{isWorking},#{studentPosition},#{summary},#{updateBy},#{updateAt})
+    </insert>
+
+    <!--删除-->
+    <delete id="deleteStudent" parameterType="long">
+        delete from tb_student where id = #{id}
+    </delete>
+
+    <!--修改-->
+    <update id="updateStudent" parameterType="com.ptteng.gwj.entities.Student">
+        update tb_student set create_by=#{createBy},student_name=#{studentName},is_working=#{isWorking},
+        student_position=#{studentPosition},summary=#{summary},update_by=#{updateBy},update_at=#{updateAt} where id=#{id}
+    </update>
+
+    <!--查询-->
+    <select id="getStudent" parameterType="long" resultType="com.ptteng.gwj.entities.Student">
+        select * from tb_student where id = #{id}
+    </select>
+
+    <!--统计总数-->
+    <select id="numberAll"  resultType="int">
+        select count(*) from tb_student
+    </select>
+
+    <!--统计找到工作的学员数量-->
+    <select id="numberWorking" resultType="int">
+        select count(is_working) from tb_student
+        where is_working='1'
+    </select>
+
+    <!--获取已工作学员列表-->
+    <select id="findWorking" resultType="com.ptteng.gwj.entities.Student">
+        select * from tb_student where is_working='1'
+    </select>
+</mapper>

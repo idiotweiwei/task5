@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                             http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  
+  <display-name>Archetype Created Web ApplicationContext</display-name>
+  
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+  
+  <!--默认监听器-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!--编码过滤器，用来控制中文字符编码-->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--使用Rest风格的URI，将页面普通的post请求转为指定的delete或者put请求 -->
+  <filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--HttpPutFormContentFilter：将请求体中的数据解析包装成一个map -->
+  <!--<filter>-->
+    <!--<filter-name>HttpPutFormContentFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>-->
+  <!--</filter>-->
+  <!--<filter-mapping>-->
+    <!--<filter-name>HttpPutFormContentFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+  <!--</filter-mapping>-->
+
+
+  <!--Spring MVC servlet     前端处理器-->
+  <servlet>
+    <servlet-name>springmvc-servlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-servlet.xml</param-value>
+    </init-param>
+    <!--<init-param>-->
+      <!--<param-name>readonly</param-name>-->
+      <!--<param-value>false</param-value>-->
+    <!--</init-param>-->
+    <!--表示启动容器时初始化该Servlet-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!--处理器适配器-->
+  <servlet-mapping>
+    <servlet-name>springmvc-servlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+   <!--欢迎页-->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!--时间格式转化-->
+  <jsp-config>
+    <taglib>
+      <taglib-uri>/tags</taglib-uri>
+      <taglib-location>/WEB-INF/datetag.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+
+</web-app>

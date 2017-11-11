@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ptteng.gwj.dao.UserDao">
+
+    <!--声明实体类类型和数据库字段名-->
+    <resultMap id="studentMap" type="com.ptteng.gwj.entities.Student">
+        <id property="userId" column="user_id"/>
+        <result property="createAt" column="create_at"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="loginAt" column="login_at"/>
+        <result property="updateAt" column="update_at"/>
+    </resultMap>
+
+    <!--登录-->
+    <select id="login" parameterType="com.ptteng.gwj.entities.User" resultType="com.ptteng.gwj.entities.User">
+        select * from tb_idiot where user_name=#{userName} and user_password=#{userPassword}
+    </select>
+
+    <update id="updateLoginAt" parameterType="com.ptteng.gwj.entities.User">
+        update tb_idiot set login_at=#{loginAt}  where user_id=#{userId}
+    </update>
+
+    <!--注册-->
+    <insert id="addUser" parameterType="com.ptteng.gwj.entities.User">
+        insert into tb_idiot(user_name,user_password,create_at,update_at) values (#{userName},#{userPassword},#{createAt},#{updateAt})
+    </insert>
+
+</mapper>
