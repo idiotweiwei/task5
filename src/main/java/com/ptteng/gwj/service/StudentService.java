@@ -29,4 +29,16 @@ public interface StudentService {
 
     //获取已工作学员列表
     List<Student> findWorking();
+
+    //查找学员(memcached)
+    Student findById(long id);
+
+    //查找学员(redis)
+    Student findById1(long id);
+
+    //查找学员(json)
+//    Student jsonById(long id);
+
+    //查找学员(json--memcached)
+//    Student json1ById(long id);
 }

@@ -3,16 +3,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/mvc
-                           http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--组件扫描和自动装配。。。提示这个路径下的类是使用注解的-->
     <context:component-scan base-package="com.ptteng.gwj"/>
+
+    <!-- 是Aspect注解起作用：自动为匹配的类生产代理对象 -->
+    <aop:aspectj-autoproxy/>
 
     <!--1.载属性配置文件。。。数据库信息-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -31,9 +40,9 @@
         <property name="password" value="${jdbc.password}"/>
 
         <!-- 配置初始化大小、最小、最大 -->
-        <property name="initialSize" value="3" />
-        <property name="minIdle" value="3" />
-        <property name="maxActive" value="20" />
+        <property name="initialSize" value="20" />
+        <property name="minIdle" value="10" />
+        <property name="maxActive" value="50" />
 
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="60000" />
@@ -94,4 +103,52 @@
     <!--6.配置基于注解的声明式事务-->
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
 
+    <!--7.memcached注入-->
+    <bean id="memcachedPool" class="com.whalin.MemCached.SockIOPool" factory-method="getInstance" init-method="initialize">
+        <constructor-arg value="neeaMemcachedPool"/>
+
+        <property name="servers">
+            <list>
+                <value>127.0.0.1:11211</value>
+            </list>
+        </property>
+
+        <!--初始化时对每个服务器建立的连接数目 -->
+        <property name="initConn" value="20"/>
+        <!--每个服务器建立最小的连接数，当自查线程发现与某个服务器建立连接数目小于这个数目时会弥补剩下的连接 -->
+        <property name="minConn" value="10"/>
+        <!--每个服务器建立最大的连接数，当自查线程发现与某个服务器建立连接数目大于这个数目时就会逐个检查这些连接的空闲时间是
+        否大于maxConn，如果大于会关闭这些连接，直到连接数等于maxConn -->
+        <property name="maxConn" value="50"/>
+        <!--Socket的参数，如果是true在写数据时不缓冲，立即发送出去 -->
+        <property name="nagle" value="false"/>
+        <!--Socket阻塞读取数据的超时时间 -->
+        <property name="socketTO" value="3000"/>
+    </bean>
+
+    <bean id="memcachedClient" class="com.whalin.MemCached.MemCachedClient">
+        <constructor-arg value="neeaMemcachedPool"/>
+    </bean>
+
+
+    <!--8.redis连接池的配置-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--最大连接数-->
+        <property name="maxTotal" value="300"/>
+        <!--最大空闲连接数-->
+        <property name="maxIdle" value="100"/>
+        <!--获取连接时最大等待毫秒-->
+        <property name="maxWaitMillis" value="1000"/>
+        <!--在获取连接的时候检查有效性，默认false-->
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+
+    <!--redis的连接池pool，不是必选项：timeout/password-->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg name="host" value="127.0.0.1"/>
+        <constructor-arg name="port" value="6379" type="int"/>
+        <constructor-arg name="timeout" value="100000" type="int"/>
+        <constructor-arg name="password" value="123456"/>
+    </bean>
 </beans>

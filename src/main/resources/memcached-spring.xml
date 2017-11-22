@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--使用注解，是需要命名空间和约束文件。以下就是一些约束文件-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--memcached注入-->
+    <bean id="memcachedPool" class="com.whalin.MemCached.SockIOPool" factory-method="getInstance" init-method="initialize">
+        <constructor-arg value="neeaMemcachedPool"/>
+
+        <property name="servers">
+            <list>
+                <value>127.0.0.1:11211</value>
+            </list>
+        </property>
+
+        <!--初始化时对每个服务器建立的连接数目 -->
+        <property name="initConn" value="20"/>
+        <!--每个服务器建立最小的连接数，当自查线程发现与某个服务器建立连接数目小于这个数目时会弥补剩下的连接 -->
+        <property name="minConn" value="10"/>
+        <!--每个服务器建立最大的连接数，当自查线程发现与某个服务器建立连接数目大于这个数目时就会逐个检查这些连接的空闲时间是
+        否大于maxConn，如果大于会关闭这些连接，直到连接数等于maxConn -->
+        <property name="maxConn" value="50"/>
+        <!--Socket的参数，如果是true在写数据时不缓冲，立即发送出去 -->
+        <property name="nagle" value="false"/>
+        <!--Socket阻塞读取数据的超时时间 -->
+        <property name="socketTO" value="3000"/>
+    </bean>
+
+    <bean id="memcachedClient" class="com.whalin.MemCached.MemCachedClient">
+        <constructor-arg value="neeaMemcachedPool"/>
+    </bean>
+
+
+
+</beans>

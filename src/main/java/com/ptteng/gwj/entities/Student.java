@@ -1,6 +1,8 @@
 package com.ptteng.gwj.entities;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable{
     private long id;
     private String createBy;
     private long createAt;

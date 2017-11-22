@@ -3,12 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/mvc
-                           http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--开启注解-->
     <!-- 配置SpringMVC -->
@@ -21,7 +22,8 @@
 
 
     <!--2.自动扫描地址中有标注的文件，转化为bean并且将其注入bean-->
-    <context:component-scan base-package="com.ptteng.gwj.controller"/>
+    <context:component-scan base-package="com.ptteng.gwj"/>
+    <aop:aspectj-autoproxy/>
 
     <!--3.静态资源默认servlet配置
         (1)加入对静态资源的处理：js,gif,png

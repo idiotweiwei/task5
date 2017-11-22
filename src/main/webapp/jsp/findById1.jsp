@@ -28,23 +28,23 @@
         <td>修改</td>
     </tr>
     <tr>
-        <td>${ss.id}</td>
-        <td>${ss.createBy}</td>
-        <td>${ss.createAt}</td>
-        <td>${ss.studentName}</td>
-        <td>${ss.isWorking}</td>
-        <td>${ss.studentPosition}</td>
-        <td>${ss.summary}</td>
-        <td>${ss.updateBy}</td>
-        <td>${ss.updateAt}</td>
-        <td><a href="/a/studentpages?id=${ss.id}">修改</a></td>
-        <td><a href="/a/studentpage?id=${ss.id}">删除</a></td>
+        <td>${pi.id}</td>
+        <td>${pi.createBy}</td>
+        <td>${pi.createAt}</td>
+        <td>${pi.studentName}</td>
+        <td>${pi.isWorking}</td>
+        <td>${pi.studentPosition}</td>
+        <td>${pi.summary}</td>
+        <td>${pi.updateBy}</td>
+        <td>${pi.updateAt}</td>
+        <td><a href="/a/studentpages?id=${pi.id}">修改</a></td>
+        <td><a href="/a/studentpage?id=${pi.id}">删除</a></td>
     </tr>
-    <form action="${pageContext.request.contextPath}/a/student/id" method="get">
-        输入ID<input type="text" name="searchId"/>
-        <input type="submit"  value="查询"/>
-    </form>
 
+    <form action="${pageContext.request.contextPath}/a/student/point" method="get">
+        输入ID<input type="text" name="searchPi"/>
+        <input type="submit"  value="redis缓存查询"/>
+    </form>
 
 </table>
 </body>
